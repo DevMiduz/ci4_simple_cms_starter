@@ -26,6 +26,10 @@ class CreateContentTable extends Migration
 				'constraint' => '255',
 				'unique' => true,
 			],
+            'description' => [
+				'type' => 'TEXT',
+				'null' => false,
+            ],
 			'content_body' => [
 				'type' => 'TEXT',
 				'null' => false,
