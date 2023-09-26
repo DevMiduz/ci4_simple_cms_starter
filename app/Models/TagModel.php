@@ -41,4 +41,18 @@ class TagModel extends Model
     protected $afterFind      = [];
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
+
+
+    public function find_tag_with_content($id) {
+        $tag = $this->find($id);
+
+        $builder = $this->db->table('content');
+        $builder->select('content.*');
+        $builder->join('content_tags', 'content.id = content_tags.content_id', 'inner');
+        $builder->join('tags', 'tags.id = content_tags.tag_id', 'inner');
+        $builder->where('content_tags.tag_id', $id);
+        $tag['content'] = $builder->get()->getResultArray();
+
+        return $tag;
+    }
 }

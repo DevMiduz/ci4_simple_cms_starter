@@ -2,7 +2,12 @@
 
 <?= $this->section('content') ?>
 
-<a href="/tags/new">New Item</a>
+<fieldset>
+<p>
+    <label>ID: <?=$tag['id']?></label>
+    <label>Title: <?=$tag['title']?></label>
+</p>
+</fieldset>
 
 <table>
     <tr>
@@ -19,8 +24,10 @@
                 <td><?=$row[$table_key]?></td>
             <?php endforeach; ?>
 
-            <td>| <a href="/tags/<?= $row['id'] ?>">view</a> | <a href="/tags/edit/<?= $row['id'] ?>">edit</a> | <a href="/tags/delete/<?= $row['id'] ?>">delete</a> |</td>
+            <td>| <a href="/content/<?= $row['id'] ?>">view</a> | <a href="/content/edit/<?= $row['id'] ?>">edit</a> | <a href="/content/delete/<?= $row['id'] ?>">delete</a> |</td>
         </tr>
     <?php endforeach; ?>
 </table>
+
+    <a href="/tags">Go Back</a>
 <?= $this->endSection() ?>
