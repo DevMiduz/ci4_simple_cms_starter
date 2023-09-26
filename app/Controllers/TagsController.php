@@ -68,8 +68,53 @@ class TagsController extends BaseController
      */
     public function create()
     {
-        //
+        $model = new TagModel();
+        $data = $this->request->getPost(['title']);
+
+		if (!$this->validate([
+			'title' => 'required|max_length[80]|alpha_numeric_space',
+		])) {
+			return redirect()->back()->withInput();
+		}
+
+        if (!$model->save($data)) {
+			session()->setFlashdata('error', implode('<br/>', $model->errors()));
+			return redirect()->back()->withInput();
+        }
+
+        session()->setFlashdata("message", "Tag Created Successfully.");
+        return redirect('tags/new');
     }
+
+    /*
+
+		$model = new UserModel();
+
+		$data = $this->request->getPost(['username', 'password', 'password_confirm']);
+
+		if (!$this->validate([
+			'username' => 'required|max_length[255]|alpha_numeric',
+			'password' => 'required|max_length[255]|min_length[8]|alpha_numeric_punct',
+			'password_confirm' => 'required|max_length[255]|matches[password]',
+		])) {
+			return redirect()->back()->withInput();
+		}
+
+		$password = password_hash($data['password'], PASSWORD_DEFAULT);
+
+		if ($model->save([
+			'username' => $data['username'],
+			'password' => $password,
+			'password_confirm' => $password,
+		]) === false) {
+			session()->setFlashdata('error', implode('<br/>', $model->errors()));
+			return redirect()->back()->withInput();
+		}
+
+		session()->setFlashdata("message", "User successfully registered.");
+		return redirect('auth/login');
+
+    */
 
     /**
      * Return the editable properties of a resource object

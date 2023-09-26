@@ -16,12 +16,10 @@
     <?php foreach ($table_rows as $row) : ?>
         <tr>
             <?php foreach ($table_keys as $table_key) : ?>
-                <th><?=$row[$table_key]?></th>
+                <td><?=$row[$table_key]?></td>
             <?php endforeach; ?>
-        </tr>
 
-        <tr>
-            <a href="/tags/show/<?= $tag['id'] ?>">view</a>|<a href="/tags/edit/<?= $tag['id'] ?>">edit</a>|<a href="/tags/delete/<?= $tag['id'] ?>">delete</a>
+            <td>| <a href="/tags/show/<?= $row['id'] ?>">view</a> | <a href="/tags/edit/<?= $row['id'] ?>">edit</a> | <a href="/tags/delete/<?= $row['id'] ?>">delete</a> |</td>
         </tr>
     <?php endforeach; ?>
 </table>

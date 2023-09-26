@@ -15,15 +15,15 @@ class CreateContentTypesTable extends Migration
 				'unsigned' => true,
 				'auto_increment' => true,
 			],
-			'name' => [
+			'title' => [
 				'type' => 'VARCHAR',
-				'constraint' => '255',
+				'constraint' => '100',
 				'unique' => true,
 			]
 		]);
 
 		$this->forge->addPrimaryKey('id');
-		$this->forge->addUniqueKey('name');
+		$this->forge->addUniqueKey('title');
 		$this->forge->createTable('content_types');
     }
 

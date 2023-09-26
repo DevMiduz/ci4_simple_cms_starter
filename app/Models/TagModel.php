@@ -13,7 +13,7 @@ class TagModel extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['id', 'name'];
+    protected $allowedFields    = ['id', 'title'];
 
     // Dates
     protected $useTimestamps = false;
@@ -23,7 +23,10 @@ class TagModel extends Model
     protected $deletedField  = 'deleted_at';
 
     // Validation
-    protected $validationRules      = [];
+    protected $validationRules      = [
+        'title' => 'required|max_length[80]|alpha_numeric_space|is_unique[tags.title,id,{id}]',
+    ];
+
     protected $validationMessages   = [];
     protected $skipValidation       = false;
     protected $cleanValidationRules = true;

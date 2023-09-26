@@ -13,7 +13,7 @@ class ContentModel extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = [];
+    protected $allowedFields    = ['title', 'slug', 'description', 'content_body', 'published', 'created_at', 'updated_at'];
 
     // Dates
     protected $useTimestamps = false;

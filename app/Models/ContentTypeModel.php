@@ -13,7 +13,7 @@ class ContentTypeModel extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['title', 'slug', 'description', 'content_body', 'published', 'created_at', 'updated_at'];
+    protected $allowedFields    = ['id', 'title'];
 
     // Dates
     protected $useTimestamps = false;
@@ -23,7 +23,9 @@ class ContentTypeModel extends Model
     protected $deletedField  = 'deleted_at';
 
     // Validation
-    protected $validationRules      = [];
+    protected $validationRules      = [
+        'title' => 'required|max_length[100]|alpha_numeric_space|is_unique[content_types.title,id,{id}]',
+    ];
     protected $validationMessages   = [];
     protected $skipValidation       = false;
     protected $cleanValidationRules = true;
