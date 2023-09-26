@@ -22,5 +22,9 @@ $routes->group('auth', static function ($routes) {
 
 $routes->group('tags', static function ($routes) {
 	$routes->get('', 'TagsController::index');
+	$routes->get('new', 'TagsController::new');
+
 	$routes->get('(:num)', 'TagsController::show/$1');
+
+	
 });

@@ -13,7 +13,7 @@ class TagModel extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['name'];
+    protected $allowedFields    = ['id', 'name'];
 
     // Dates
     protected $useTimestamps = false;

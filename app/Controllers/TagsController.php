@@ -14,8 +14,13 @@ class TagsController extends BaseController
      */
     public function index()
     {
+        $model = new TagModel();
+        $tags = $model->findAll();
+
         $data = [
-            'page_title' => 'Tags'
+            'page_title' => 'Tags',
+            'table_keys' => $model->allowedFields,
+            'table_rows' => $tags,
         ];
 
         return view('tags/index', $data);
@@ -36,7 +41,7 @@ class TagsController extends BaseController
         }
 
         $data = [
-            'page_title' => 'Show Tag with ID: ' . $id
+            'page_title' => 'Show Tag with ID: ' . $id,
         ];
 
         return view('tags/index', $data);
@@ -49,7 +54,11 @@ class TagsController extends BaseController
      */
     public function new()
     {
-        //
+        $data = [
+            'page_title' => 'Tags - New Item',
+        ];
+
+        return view('tags/new', $data);
     }
 
     /**
@@ -89,6 +98,6 @@ class TagsController extends BaseController
      */
     public function delete($id = null)
     {
-        //
+        
     }
 }
