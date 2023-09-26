@@ -19,3 +19,8 @@ $routes->group('auth', static function ($routes) {
 	$routes->post('account/delete', 'Auth\AccountController::delete');
 	$routes->post('account/logout', 'Auth\AccountController::logout');
 });
+
+$routes->group('tags', static function ($routes) {
+	$routes->get('', 'TagsController::index');
+	$routes->get('(:num)', 'TagsController::show/$1');
+});
