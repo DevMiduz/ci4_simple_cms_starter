@@ -26,4 +26,5 @@ $routes->group('tags', static function ($routes) {
 
 	$routes->get('new', 'TagsController::new');
 	$routes->post('create', 'TagsController::create');
+	$routes->post('delete/(:num)', 'TagsController::delete/$1');
 });

@@ -118,6 +118,23 @@ class TagsController extends BaseController
      */
     public function delete($id = null)
     {
-        
+        $model = new TagModel();
+
+        //$this->response->setContentType('application/json');
+
+        if (!$model->find($id)) {
+            session()->setFlashdata('error', 'Item with that ID not found.');
+            $this->response->setStatusCode(404, HttpStatusCodes::get_message(404));
+            return $this->response->setJSON(['error' => 'Item with that ID not found.']);
+        }
+
+        if($model->delete($id)) {
+            session()->setFlashdata('message', 'Tag Deleted Successfully.');
+            return $this->response->setJSON(['message' => 'Tag Deleted Successfully.']);
+        } else {
+            session()->setFlashdata('error', implode('<br/>', $model->errors()));
+            return $this->response->setJSON(['error' => implode('<br/>', $model->errors())]);
+        }
+
     }
 }
