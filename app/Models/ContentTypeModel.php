@@ -40,4 +40,16 @@ class ContentTypeModel extends Model
     protected $afterFind      = [];
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
+
+    public function find_content_type_with_content($id) {
+        $content_type = $this->find($id);
+
+        $builder = $this->db->table('content');
+        $builder->select('content.*');
+        $builder->where('content_type_id', $id);
+
+        $content_type['content'] = $builder->get()->getResultArray();
+
+        return $content_type;
+    }
 }
