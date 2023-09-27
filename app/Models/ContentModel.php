@@ -7,7 +7,7 @@ use CodeIgniter\Model;
 class ContentModel extends Model
 {
     protected $DBGroup          = 'default';
-    protected $table            = 'contents';
+    protected $table            = 'content';
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
     protected $returnType       = 'array';
@@ -38,4 +38,19 @@ class ContentModel extends Model
     protected $afterFind      = [];
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
+
+    public function find_content_with_tags_and_type($id) {
+        $content = $this->find($id);
+
+        $builder = $this->db->table('tags');
+        $builder->select('tags.*');
+        $builder->join('content_tags', 'tags.id = content_tags.tag_id', 'inner');
+        $builder->where('content_tags.content_id', $id);
+        $content['tags'] = $builder->get()->getResultArray();
+
+        $content_type = new ContentTypeModel();
+        $content['content_type'] = $content_type->find($content['content_type_id']);
+
+        return $content;
+    }
 }

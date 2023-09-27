@@ -43,3 +43,15 @@ $routes->group('content_types', static function ($routes) {
 	$routes->get('edit/(:num)', 'ContentTypesController::edit/$1');
 	$routes->post('update/(:num)', 'ContentTypesController::update/$1');
 });
+
+$routes->group('content', static function ($routes) {
+	$routes->get('', 'ContentController::index');
+	$routes->get('(:num)', 'ContentController::show/$1');
+
+	$routes->get('new', 'ContentController::new');
+	$routes->post('create', 'ContentController::create');
+	$routes->post('delete/(:num)', 'ContentController::delete/$1');
+
+	$routes->get('edit/(:num)', 'ContentController::edit/$1');
+	$routes->post('update/(:num)', 'ContentController::update/$1');
+});
