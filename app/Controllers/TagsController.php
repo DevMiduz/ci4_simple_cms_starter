@@ -4,7 +4,6 @@ namespace App\Controllers;
 
 use App\Libraries\HttpStatusCodes;
 use App\Models\TagModel;
-use App\Models\ContentModel;
 
 class TagsController extends BaseController
 {
@@ -104,7 +103,6 @@ class TagsController extends BaseController
         if(!$tag) {
             return $this->response->setStatusCode(404)->setBody(HttpStatusCodes::get_message(404));
         }
-
         
         $data = [
             'page_title' => 'Tags - Edit item',

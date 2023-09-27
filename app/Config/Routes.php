@@ -31,3 +31,15 @@ $routes->group('tags', static function ($routes) {
 	$routes->get('edit/(:num)', 'TagsController::edit/$1');
 	$routes->post('update/(:num)', 'TagsController::update/$1');
 });
+
+$routes->group('content_types', static function ($routes) {
+	$routes->get('', 'ContentTypesController::index');
+	$routes->get('(:num)', 'ContentTypesController::show/$1');
+
+	$routes->get('new', 'ContentTypesController::new');
+	$routes->post('create', 'ContentTypesController::create');
+	$routes->post('delete/(:num)', 'ContentTypesController::delete/$1');
+
+	$routes->get('edit/(:num)', 'ContentTypesController::edit/$1');
+	$routes->post('update/(:num)', 'ContentTypesController::update/$1');
+});
