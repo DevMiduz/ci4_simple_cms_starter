@@ -87,7 +87,7 @@ class TagsController extends BaseController
         }
 
         session()->setFlashdata("message", "Tag Created Successfully.");
-        return redirect('tags/new');
+        return redirect()->to('tags/new');
     }
 
 
@@ -98,7 +98,23 @@ class TagsController extends BaseController
      */
     public function edit($id = null)
     {
-        //
+        $model = new TagModel();
+        $tag = $model->find_tag_with_content($id);
+
+        if(!$tag) {
+            return $this->response->setStatusCode(404)->setBody(HttpStatusCodes::get_message(404));
+        }
+
+        
+        $data = [
+            'page_title' => 'Tags - Edit item',
+            'tag' => $tag,
+            'table_keys' => ['id', 'title', 'description'],
+            'table_rows' => $tag['content'],
+        ];
+
+        return view('tags/edit', $data);
+        
     }
 
     /**
@@ -108,7 +124,23 @@ class TagsController extends BaseController
      */
     public function update($id = null)
     {
-        //
+        $model = new TagModel();
+        $data = $this->request->getPost(['title']);
+
+		if (!$this->validate([
+			'title' => 'required|max_length[80]|alpha_numeric_space',
+		])) {
+			return redirect()->back()->withInput();
+		}
+
+        if (!$model->update($id, $data)) {
+			session()->setFlashdata('error', implode('<br/>', $model->errors()));
+			return redirect()->back()->withInput();
+        }
+
+        session()->setFlashdata("message", "Tag Updated Successfully.");    
+        
+        return redirect()->to('tags/edit/' . $id);
     }
 
     /**
@@ -119,8 +151,6 @@ class TagsController extends BaseController
     public function delete($id = null)
     {
         $model = new TagModel();
-
-        //$this->response->setContentType('application/json');
 
         if (!$model->find($id)) {
             session()->setFlashdata('error', 'Item with that ID not found.');

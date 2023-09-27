@@ -27,4 +27,7 @@ $routes->group('tags', static function ($routes) {
 	$routes->get('new', 'TagsController::new');
 	$routes->post('create', 'TagsController::create');
 	$routes->post('delete/(:num)', 'TagsController::delete/$1');
+
+	$routes->get('edit/(:num)', 'TagsController::edit/$1');
+	$routes->post('update/(:num)', 'TagsController::update/$1');
 });

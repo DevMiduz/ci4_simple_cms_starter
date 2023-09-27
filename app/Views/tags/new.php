@@ -13,7 +13,7 @@
     </p>
 
     <p>
-        <?=form_submit('create_submit', 'Create')?>
+        <?=form_submit('save_submit', 'Save')?>
     </p>
     <?=form_close()?>
 
