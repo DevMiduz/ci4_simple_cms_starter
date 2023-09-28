@@ -4,16 +4,16 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class ContentModel extends Model
+class ContentTagModel extends Model
 {
     protected $DBGroup          = 'default';
-    protected $table            = 'content';
+    protected $table            = 'content_tags';
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['title', 'slug', 'description', 'content_body', 'published', 'content_type_id', 'created_at', 'updated_at'];
+    protected $allowedFields    = ['content_id', 'tag_id'];
 
     // Dates
     protected $useTimestamps = false;
@@ -24,11 +24,9 @@ class ContentModel extends Model
 
     // Validation
     protected $validationRules      = [
-        'title' => 'required|max_length[180]|is_unique[content.title,id,{id}]',
-        'slug' => 'required|max_length[180]|is_unique[content.slug,id,{id}]',
-        'content_type_id' => 'required',
+        'content_id' => 'required',
+        'tag_id' => 'required',
     ];
-
     protected $validationMessages   = [];
     protected $skipValidation       = false;
     protected $cleanValidationRules = true;
@@ -43,19 +41,4 @@ class ContentModel extends Model
     protected $afterFind      = [];
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
-
-    public function find_content_with_tags_and_type($id) {
-        $content = $this->find($id);
-
-        $builder = $this->db->table('tags');
-        $builder->select('tags.*');
-        $builder->join('content_tags', 'tags.id = content_tags.tag_id', 'inner');
-        $builder->where('content_tags.content_id', $id);
-        $content['tags'] = $builder->get()->getResultArray();
-
-        $content_type = new ContentTypeModel();
-        $content['content_type'] = $content_type->find($content['content_type_id']);
-
-        return $content;
-    }
 }

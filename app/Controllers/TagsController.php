@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Libraries\HttpStatusCodes;
+use App\Models\ContentTagModel;
 use App\Models\TagModel;
 
 class TagsController extends BaseController
@@ -105,10 +106,7 @@ class TagsController extends BaseController
         }
         
         $data = [
-            'page_title' => 'Tags - Edit item',
-            'tag' => $tag,
-            'table_keys' => ['id', 'title', 'description'],
-            'table_rows' => $tag['content'],
+            'page_title' => 'Tags - Edit item',model
         ];
 
         return view('tags/edit', $data);
@@ -163,6 +161,9 @@ class TagsController extends BaseController
             session()->setFlashdata('error', implode('<br/>', $model->errors()));
             return $this->response->setJSON(['error' => implode('<br/>', $model->errors())]);
         }
+
+        $content_tag_model = new ContentTagModel();
+        $content_tag_model->where('tag_id', $id)->delete();
 
     }
 }

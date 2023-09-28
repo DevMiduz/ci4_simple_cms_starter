@@ -6,6 +6,7 @@ use App\Libraries\HttpStatusCodes;
 use App\Controllers\BaseController;
 use App\Models\ContentModel;
 use App\Models\ContentTypeModel;
+use App\Models\ContentTagModel;
 use App\Models\TagModel;
 
 class ContentController extends BaseController
@@ -104,7 +105,14 @@ class ContentController extends BaseController
         $data['id'] = $model->getInsertID();
 
         $data['content_tags'] = array_map(fn($value): array => ['content_id' => $data['id'], 'tag_id' => $value], $data['content_tags']);
-        $model->save_content_tags($data);
+
+        $content_tag_model = new ContentTagModel();
+        $content_tag_model->where('content_id', $data['id'])->delete();
+
+        foreach ($data['content_tags'] as $row) {
+            $content_tag_model->insert($row);
+        }
+
         session()->setFlashdata("message", "Content Created Successfully.");
         return redirect()->to('content/new');
     }
@@ -117,7 +125,10 @@ class ContentController extends BaseController
     public function edit($id = null)
     {
         $model = new ContentModel();
-        $content = $model->find_content_with_content($id);
+        $content_type_model = new ContentTypeModel();
+        $tag_model = new TagModel();
+
+        $content = $model->find_content_with_tags_and_type($id);
 
         if(!$content) {
             return $this->response->setStatusCode(404)->setBody(HttpStatusCodes::get_message(404));
@@ -126,8 +137,8 @@ class ContentController extends BaseController
         $data = [
             'page_title' => 'Content - Edit item',
             'content' => $content,
-            'table_keys' => ['id', 'title', 'description'],
-            'table_rows' => $content['content'],
+            'content_types' => array_column($content_type_model->findAll(), 'title', 'id'),
+            'tags' => array_column($tag_model->findAll(), 'title', 'id'),
         ];
 
         return view('content/edit', $data);
