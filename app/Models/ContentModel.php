@@ -24,8 +24,8 @@ class ContentModel extends Model
 
     // Validation
     protected $validationRules      = [
-        'title' => 'required|max_length[180]|is_unique[content.title,id,{id}]',
-        'slug' => 'required|max_length[180]|is_unique[content.slug,id,{id}]',
+        'title' => 'required|max_length[180]',
+        'slug' => 'required|max_length[180]',
         'content_type_id' => 'required',
     ];
 

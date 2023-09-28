@@ -1,7 +1,7 @@
 <?= $this->extend('layouts/default') ?>
 
 <?= $this->section('content') ?>
-    <?=form_open('content/update', ['method' => 'post'])?>
+    <?=form_open('content/update/'.$content['id'], ['method' => 'post'])?>
 
     <?=form_label('Title:', 'title')?>
     <?=form_input('title', is_null(old('title')) ? $content['title'] : old('title'))?>
@@ -20,7 +20,7 @@
     <?=validation_show_error('content_type_id')?>
 
     <?=form_label('Content Tags:', 'content_tags[]')?>
-    <?=form_multiselect('content_tags[]', $tags, is_null(old('content_tags[]')) ? $content['tags'] : old('content_tags[]'))?>
+    <?=form_multiselect('content_tags[]', $tags, is_null(old('content_tags[]')) ? $content_tag_ids : old('content_tags[]'))?>
     <?=validation_show_error('content_tags[]')?>
 
     <?=form_label('Published:', 'published')?>

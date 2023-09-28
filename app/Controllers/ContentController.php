@@ -133,12 +133,14 @@ class ContentController extends BaseController
         if(!$content) {
             return $this->response->setStatusCode(404)->setBody(HttpStatusCodes::get_message(404));
         }
-        
+
+
         $data = [
             'page_title' => 'Content - Edit item',
             'content' => $content,
             'content_types' => array_column($content_type_model->findAll(), 'title', 'id'),
             'tags' => array_column($tag_model->findAll(), 'title', 'id'),
+            'content_tag_ids' => array_column($content['tags'],'id'),
         ];
 
         return view('content/edit', $data);
@@ -153,17 +155,29 @@ class ContentController extends BaseController
     public function update($id = null)
     {
         $model = new ContentModel();
-        $data = $this->request->getPost(['title']);
+        $data = $this->request->getPost(['title', 'description', 'content_body', 'content_type_id', 'content_tags', 'published']);
+        $data['slug'] = url_title($data['title'],'-',true);
+        $data['published'] = (!isset($data['published'])) ?  0 : $data['published'];
 
 		if (!$this->validate([
-			'title' => 'required|max_length[100]|alpha_numeric_space',
-		])) {
+            'title' => 'required|max_length[180]',
+            'content_type_id' => 'required',
+        ])) {
 			return redirect()->back()->withInput();
 		}
-
+        
         if (!$model->update($id, $data)) {
 			session()->setFlashdata('error', implode('<br/>', $model->errors()));
 			return redirect()->back()->withInput();
+        }
+
+        $data['content_tags'] = array_map(fn($value): array => ['content_id' => $id, 'tag_id' => $value], $data['content_tags']);
+
+        $content_tag_model = new ContentTagModel();
+        $content_tag_model->where('content_id', $id)->delete();
+
+        foreach ($data['content_tags'] as $row) {
+            $content_tag_model->insert($row);
         }
 
         session()->setFlashdata("message", "Content Updated Successfully.");    
