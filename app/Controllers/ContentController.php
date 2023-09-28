@@ -200,13 +200,15 @@ class ContentController extends BaseController
             return $this->response->setJSON(['error' => 'Item with that ID not found.']);
         }
 
-        if($model->delete($id)) {
-            session()->setFlashdata('message', 'Content Deleted Successfully.');
-            return $this->response->setJSON(['message' => 'Content Deleted Successfully.']);
-        } else {
+        $content_tag_model = new ContentTagModel();
+
+        if(!$model->delete($id) || !$content_tag_model->where('content_id', $id)->delete()) {
             session()->setFlashdata('error', implode('<br/>', $model->errors()));
             return $this->response->setJSON(['error' => implode('<br/>', $model->errors())]);
         }
+
+        session()->setFlashdata('message', 'Content Deleted Successfully.');
+        return $this->response->setJSON(['message' => 'Content Deleted Successfully.']);
 
     }
 }
