@@ -3,7 +3,7 @@
 <?= $this->section('content') ?>
     <?=form_open('tags/update/' . $tag['id'], ['method' => 'post'])?>
 
-    <?=form_label('Title:', 'name')?>
+    <?=form_label('Title:', 'title')?>
     <?=form_input('title', is_null(old('title')) ? $tag['title'] : old('title'))?>
     <?=validation_show_error('title')?>
 

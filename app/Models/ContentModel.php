@@ -13,7 +13,7 @@ class ContentModel extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['title', 'slug', 'description', 'content_body', 'published', 'created_at', 'updated_at'];
+    protected $allowedFields    = ['title', 'slug', 'description', 'content_body', 'published', 'content_type_id', 'created_at', 'updated_at'];
 
     // Dates
     protected $useTimestamps = false;
@@ -23,7 +23,12 @@ class ContentModel extends Model
     protected $deletedField  = 'deleted_at';
 
     // Validation
-    protected $validationRules      = [];
+    protected $validationRules      = [
+        'title' => 'required|max_length[180]|is_unique[content.title,id,{id}]',
+        'slug' => 'required|max_length[180]|is_unique[content.slug,id,{id}]',
+        'content_type_id' => 'required',
+    ];
+
     protected $validationMessages   = [];
     protected $skipValidation       = false;
     protected $cleanValidationRules = true;
@@ -52,5 +57,12 @@ class ContentModel extends Model
         $content['content_type'] = $content_type->find($content['content_type_id']);
 
         return $content;
+    }
+
+    public function save_content_tags($data) {
+        $builder = $this->db->table('content_tags');
+        $builder->delete('content_id='.$data['id']);
+        $builder->insertBatch($data['content_tags']);
+        return true;
     }
 }

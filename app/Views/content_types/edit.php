@@ -3,7 +3,7 @@
 <?= $this->section('content') ?>
     <?=form_open('content_types/update/' . $content_type['id'], ['method' => 'post'])?>
 
-    <?=form_label('Title:', 'name')?>
+    <?=form_label('Title:', 'title')?>
     <?=form_input('title', is_null(old('title')) ? $content_type['title'] : old('title'))?>
     <?=validation_show_error('title')?>
 

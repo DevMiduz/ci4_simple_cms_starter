@@ -35,8 +35,8 @@ class CreateContentTable extends Migration
 				'null' => false,
             ],
             'published' => [
-				'type' => 'BOOLEAN',
-                'default' => false,
+				'type' => 'BOOL',
+                'default' => 0,
 				'null' => false,
 			],
 			'created_at' => [

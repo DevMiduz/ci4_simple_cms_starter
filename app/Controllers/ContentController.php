@@ -65,8 +65,13 @@ class ContentController extends BaseController
      */
     public function new()
     {
+        $content_type_model = new ContentTypeModel();
+        $tag_model = new TagModel();
+
         $data = [
             'page_title' => 'Content - New Item',
+            'content_types' => array_column($content_type_model->findAll(), 'title', 'id'),
+            'tags' => array_column($tag_model->findAll(), 'title', 'id'),
         ];
 
         return view('content/new', $data);
@@ -80,19 +85,26 @@ class ContentController extends BaseController
     public function create()
     {
         $model = new ContentModel();
-        $data = $this->request->getPost(['title']);
+        $data = $this->request->getPost(['title', 'description', 'content_body', 'content_type_id', 'content_tags', 'published']);
+        $data['slug'] = url_title($data['title'],'-',true);
+        $data['published'] = (!isset($data['published'])) ?  0 : $data['published'];
 
 		if (!$this->validate([
-			'title' => 'required|max_length[100]|alpha_numeric_space',
-		])) {
+            'title' => 'required|max_length[180]',
+            'content_type_id' => 'required',
+        ])) {
 			return redirect()->back()->withInput();
 		}
-
+        
         if (!$model->save($data)) {
 			session()->setFlashdata('error', implode('<br/>', $model->errors()));
 			return redirect()->back()->withInput();
         }
 
+        $data['id'] = $model->getInsertID();
+
+        $data['content_tags'] = array_map(fn($value): array => ['content_id' => $data['id'], 'tag_id' => $value], $data['content_tags']);
+        $model->save_content_tags($data);
         session()->setFlashdata("message", "Content Created Successfully.");
         return redirect()->to('content/new');
     }
