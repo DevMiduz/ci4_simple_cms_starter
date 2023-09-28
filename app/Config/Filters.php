@@ -73,8 +73,31 @@ class Filters extends BaseConfig {
 	 * 'isLoggedIn' => ['before' => ['account/*', 'profiles/*']]
 	 */
 	public array $filters = [
-		'auth_filter' => ['before' => ['auth/account', 'auth/account/*']],
-		'localhost_filter' => ['before' => ['auth', 'auth/*']],
-		'request_log_filter' => ['before' => ['auth', 'auth/*']]
+		'localhost_filter' => ['before' => [
+			'auth', 
+			'auth/*',
+			'tags',
+			'tags/*',
+			'content_types',
+			'content_types/*',
+		]],
+		
+		'auth_filter' => ['before' => [
+			'auth/account', 
+			'auth/account/*',
+			'tags',
+			'tags/*',
+			'content_types',
+			'content_types/*',
+		]],
+
+		'request_log_filter' => ['before' => [
+			'auth', 
+			'auth/*',
+			'tags',
+			'tags/*',
+			'content_types',
+			'content_types/*',
+		]]
 	];
 }

@@ -45,15 +45,15 @@ $routes->group('content_types', static function ($routes) {
 });
 
 $routes->group('content', static function ($routes) {
-	$routes->get('', 'ContentController::index');
+	$routes->get('', 'ContentController::index', ['filter' => ['auth_filter','localhost_filter','request_log_filter']]);
 	$routes->get('(:num)', 'ContentController::show/$1');
 
-	$routes->get('new', 'ContentController::new');
-	$routes->post('create', 'ContentController::create');
-	$routes->post('delete/(:num)', 'ContentController::delete/$1');
+	$routes->get('new', 'ContentController::new', ['filter' => ['auth_filter','localhost_filter','request_log_filter']]);
+	$routes->post('create', 'ContentController::create', ['filter' => ['auth_filter','localhost_filter','request_log_filter']]);
+	$routes->post('delete/(:num)', 'ContentController::delete/$1', ['filter' => ['auth_filter','localhost_filter','request_log_filter']]);
 
-	$routes->get('edit/(:num)', 'ContentController::edit/$1');
-	$routes->post('update/(:num)', 'ContentController::update/$1');
+	$routes->get('edit/(:num)', 'ContentController::edit/$1', ['filter' => ['auth_filter','localhost_filter','request_log_filter']]);
+	$routes->post('update/(:num)', 'ContentController::update/$1', ['filter' => ['auth_filter','localhost_filter','request_log_filter']]);
 });
 
 $routes->group('file_upload', static function ($routes) {
