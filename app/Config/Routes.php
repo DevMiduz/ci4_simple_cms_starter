@@ -55,3 +55,8 @@ $routes->group('content', static function ($routes) {
 	$routes->get('edit/(:num)', 'ContentController::edit/$1');
 	$routes->post('update/(:num)', 'ContentController::update/$1');
 });
+
+$routes->group('file_upload', static function ($routes) {
+	$routes->get('', 'FileUploadController::index');
+	$routes->post('upload', 'FileUploadController::upload');
+});
