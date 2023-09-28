@@ -9,6 +9,7 @@ use App\Models\ContentTypeModel;
 use App\Models\ContentTagModel;
 use App\Models\TagModel;
 
+
 class ContentController extends BaseController
 {
     /**
@@ -53,8 +54,6 @@ class ContentController extends BaseController
             'content_types' => $content_type_model->findAll(),
             'tags' => $tag_model->findAll(),
         ];
-
-        return print_r($data, true);
 
         return view('content/show', $data);
     }
